@@ -47,7 +47,7 @@ export default function Navbar() {
           href="/admin"
           className="absolute right-2 -bottom-5 text-xs text-zinc-400 hover:text-pink-400 transition"
         >
-          관리자
+          관리자d
         </Link>
       </div>
     </nav>
