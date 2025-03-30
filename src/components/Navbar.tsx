@@ -3,13 +3,13 @@
 import Link from 'next/link';
 import { useCartStore } from '@/store/cartStore';
 import { useSearchStore } from '@/store/searchStore';
-import { useThemeStore } from '@/store/themeStore';
+// import { useThemeStore } from '@/store/themeStore';
 
 export default function Navbar() {
   const items = useCartStore((state) => state.items);
   const totalCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const { keyword, setKeyword } = useSearchStore();
-  const { darkMode, toggleDarkMode } = useThemeStore();
+  // const { darkMode, toggleDarkMode } = useThemeStore();
 
   return (
     <nav className="bg-white shadow-sm p-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4 sticky top-0 z-20 backdrop-blur-md">
