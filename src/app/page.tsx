@@ -1,11 +1,12 @@
 'use client';
 
-import products from '@/data/products';
+import { useProductStore } from '@/store/productStore';
 import ProductCard from '@/components/ProductCard';
 import { useSearchStore } from '@/store/searchStore';
 
 export default function HomePage() {
   const { keyword } = useSearchStore();
+  const { products } = useProductStore();
 
   const filtered = products.filter((product) =>
     product.name.toLowerCase().includes(keyword.toLowerCase())

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useAdminStore } from '@/store/adminStore';
+import { useProductStore } from '@/store/productStore';
 
 export default function AdminPage() {
   const [auth, setAuth] = useState(false);
@@ -13,7 +13,7 @@ export default function AdminPage() {
     description: '',
   });
 
-  const { addProduct, products } = useAdminStore();
+  const { addProduct, products } = useProductStore();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
