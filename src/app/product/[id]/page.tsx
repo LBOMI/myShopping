@@ -29,12 +29,12 @@ export default function ProductDetailPage() {
         <div className="flex flex-col gap-4 w-full md:w-1/2">
           <h1 className="text-2xl font-bold text-gray-800">{product.name}</h1>
           <p className="text-gray-500 text-sm">{product.description}</p>
-          <p className="text-pink-500 text-xl font-semibold mt-2">
+          <p className="text-indigo-400 text-xl font-semibold mt-2">
             {product.price.toLocaleString()}원
           </p>
           <button
             onClick={() => addToCart(product)}
-            className="mt-4 w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-xl transition text-sm font-medium"
+            className="mt-4 w-full bg-pink-300 hover:bg-violet-300 text-white py-2 rounded-xl transition text-sm font-medium"
           >
             장바구니 담기
           </button>

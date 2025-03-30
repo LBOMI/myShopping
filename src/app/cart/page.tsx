@@ -19,7 +19,7 @@ export default function CartPage() {
 
   return (
     <main className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl md:text-3xl font-bold text-pink-500 mb-6">
+      <h1 className="text-2xl md:text-3xl font-bold text-violet-400 mb-6">
         🛒 내 장바구니
       </h1>
 
@@ -66,7 +66,7 @@ export default function CartPage() {
           </ul>
 
           <div className="mt-8 border-t pt-6 space-y-4">
-            <p className="text-xl font-bold text-pink-500">
+            <p className="text-xl font-bold text-indigo-500">
               총 결제 금액: {totalPrice.toLocaleString()}원
             </p>
 
@@ -80,7 +80,7 @@ export default function CartPage() {
 
               <Link
                 href="/checkout"
-                className="bg-pink-500 hover:bg-pink-600 text-white text-sm px-4 py-2 rounded-xl text-center transition"
+                className="bg-violet-400 hover:bg-pink-400 text-white text-sm px-4 py-2 rounded-xl text-center transition"
               >
                 💳 결제하기
               </Link>

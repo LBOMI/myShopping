@@ -28,7 +28,7 @@ export default function ProductCard({ product }: { product: Product }) {
             e.preventDefault(); // 링크 클릭 방지
             addToCart(product);
           }}
-          className="w-full bg-pink-500 hover:bg-pink-600 text-white text-sm font-medium py-2 rounded-xl transition"
+          className="w-full bg-pink-300 hover:bg-violet-300 text-white text-sm font-medium py-2 rounded-xl transition"
         >
           장바구니 담기
         </button>
