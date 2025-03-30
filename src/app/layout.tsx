@@ -2,7 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
-import DarkModeScript from '@/components/DarkModeScript';
+// import DarkModeScript from '@/components/DarkModeScript';
 
 const inter = Inter({ subsets: ['latin'] });
 

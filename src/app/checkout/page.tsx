@@ -8,7 +8,7 @@ import { useOrderFormStore } from '@/store/orderFormStore';
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, clearCart } = useCartStore();
-  const { form, updateForm, clearForm } = useOrderFormStore();
+  const { form, updateForm } = useOrderFormStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
