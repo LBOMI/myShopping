@@ -50,7 +50,7 @@ export default function AdminPage() {
             if (pw === '1234') setAuth(true);
             else alert('비밀번호가 틀렸습니다!');
           }}
-          className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-xl transition"
+          className="w-full bg-violet-300 hover:bg-pink-300 text-white py-2 rounded-xl transition"
         >
           로그인
         </button>
@@ -116,7 +116,7 @@ export default function AdminPage() {
 
         <button
           type="submit"
-          className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-xl font-medium transition"
+          className="w-full bg-violet-300 hover:bg-pink-300 text-white py-2 rounded-xl font-medium transition"
         >
           등록하기
         </button>
