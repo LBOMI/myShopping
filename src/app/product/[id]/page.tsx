@@ -1,44 +1,36 @@
+// src/app/product/[id]/page.tsx
 'use client';
 
 import { useParams } from 'next/navigation';
-import products from '@/data/products';
-import { useCartStore } from '@/store/cartStore';
+import { useProductStore } from '@/store/productStore';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
-  const product = products.find((p) => p.id === Number(id));
-  const addToCart = useCartStore((state) => state.addToCart);
+  const { products } = useProductStore();
 
-  if (!product) return <p className="p-6">상품을 찾을 수 없습니다.</p>;
+  const product = products.find((p) => p.id === Number(id));
+
+  if (!product) {
+    return <p className="p-6">해당 상품을 찾을 수 없습니다.</p>;
+  }
 
   return (
-    <main className="max-w-5xl mx-auto p-6">
-      <div className="flex flex-col md:flex-row gap-8">
-        {/* 이미지 */}
-        <div className="flex-shrink-0 w-full md:w-1/2">
-          <div className="aspect-square bg-zinc-100 rounded-xl shadow-md overflow-hidden">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-cover"
-            />
-          </div>
+    <main className="max-w-4xl mx-auto p-6 flex flex-col md:flex-row gap-8">
+      <div className="md:w-1/2">
+        <div className="aspect-square overflow-hidden rounded-xl shadow-md">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
         </div>
-
-        {/* 상품 정보 */}
-        <div className="flex flex-col gap-4 w-full md:w-1/2">
-          <h1 className="text-2xl font-bold text-gray-800">{product.name}</h1>
-          <p className="text-gray-500 text-sm">{product.description}</p>
-          <p className="text-indigo-400 text-xl font-semibold mt-2">
-            {product.price.toLocaleString()}원
-          </p>
-          <button
-            onClick={() => addToCart(product)}
-            className="mt-4 w-full bg-pink-300 hover:bg-violet-300 text-white py-2 rounded-xl transition text-sm font-medium"
-          >
-            장바구니 담기
-          </button>
-        </div>
+      </div>
+      <div className="md:w-1/2 flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-gray-800">{product.name}</h1>
+        <p className="text-gray-500 text-sm">{product.description}</p>
+        <p className="text-pink-500 text-xl font-semibold">
+          {product.price.toLocaleString()}원
+        </p>
       </div>
     </main>
   );
