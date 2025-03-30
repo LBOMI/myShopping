@@ -102,7 +102,7 @@ export default function AdminPage() {
             if (pw === '1234') setAuth(true);
             else alert('비밀번호가 틀렸습니다!');
           }}
-          className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-xl transition"
+          className="w-full bg-pink-300 hover:bg-violet-300 text-white py-2 rounded-xl transition"
         >
           로그인
         </button>
@@ -168,7 +168,7 @@ export default function AdminPage() {
         <div className="flex gap-2">
           <button
             type="submit"
-            className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-xl font-medium transition"
+            className="w-full bg-pink-300 hover:bg-violet-300 text-white py-2 rounded-xl font-medium transition"
           >
             {isEditing ? '수정 완료' : '등록하기'}
           </button>
@@ -198,9 +198,9 @@ export default function AdminPage() {
             <div className="flex gap-2">
               <button
                 onClick={() => handleEdit(p)}
-                className="text-xs text-blue-500 hover:underline"
+                className="text-xs text-blue-400 hover:underline"
               >
-                ✏ 수정
+                ✏️ 수정
               </button>
               <button
                 onClick={() => removeProduct(p.id)}
