@@ -13,6 +13,8 @@ interface Product {
 interface ProductStore {
   products: Product[];
   addProduct: (product: Omit<Product, 'id'>) => void;
+  removeProduct: (id: number) => void;
+  updateProduct: (product: Product) => void;
 }
 
 export const useProductStore = create<ProductStore>()(
@@ -29,6 +31,16 @@ export const useProductStore = create<ProductStore>()(
             },
           ],
         })),
+        removeProduct: (id) =>
+            set((state) => ({
+              products: state.products.filter((p) => p.id !== id),
+            })),
+          updateProduct: (updated) =>
+            set((state) => ({
+              products: state.products.map((p) =>
+                p.id === updated.id ? updated : p
+              ),
+            })),
     }),
     {
       name: 'my-shop-products', // localStorage 키 이름
