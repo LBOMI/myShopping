@@ -20,6 +20,19 @@ export default function AdminPage() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  // 파일을 base64로 변환하여 상태에 저장
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result as string;
+      setForm((prev) => ({ ...prev, image: base64 }));
+    };
+    reader.readAsDataURL(file); // base64로 변환
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.price || !form.image) return;
@@ -50,7 +63,7 @@ export default function AdminPage() {
             if (pw === '1234') setAuth(true);
             else alert('비밀번호가 틀렸습니다!');
           }}
-          className="w-full bg-violet-300 hover:bg-pink-300 text-white py-2 rounded-xl transition"
+          className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-xl transition"
         >
           로그인
         </button>
@@ -90,14 +103,13 @@ export default function AdminPage() {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label htmlFor="image" className="text-sm font-medium text-gray-700">이미지 URL</label>
+          <label htmlFor="image" className="text-sm font-medium text-gray-700">상품 이미지</label>
           <input
             id="image"
             name="image"
-            type="text"
-            placeholder="예: https://example.com/image.jpg"
-            value={form.image}
-            onChange={handleChange}
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange} // 파일을 base64로 처리
             className="w-full px-4 py-2 border rounded-xl bg-zinc-50 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
           />
         </div>
@@ -116,7 +128,7 @@ export default function AdminPage() {
 
         <button
           type="submit"
-          className="w-full bg-violet-300 hover:bg-pink-300 text-white py-2 rounded-xl font-medium transition"
+          className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-xl font-medium transition"
         >
           등록하기
         </button>
