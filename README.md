@@ -38,5 +38,6 @@ npm run dev
 
 
 ## 배포 주소
-👉 https://my-shopping-tan.vercel.app
+👉 https://my-shopping-rho.vercel.app
+
 
