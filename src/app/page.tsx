@@ -6,7 +6,11 @@ import { useSearchStore } from '@/store/searchStore';
 
 export default function HomePage() {
   const { keyword } = useSearchStore();
-  const { products } = useProductStore();
+  const { products, isHydrated } = useProductStore();
+
+  if (!isHydrated) {
+    return <p className="p-6 text-gray-400 text-sm">로딩 중...</p>; // or null
+  }
 
   const filtered = products.filter((product) =>
     product.name.toLowerCase().includes(keyword.toLowerCase())
