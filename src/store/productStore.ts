@@ -25,7 +25,7 @@ const initialProducts: Product[] = [
     price: 59000,
     image: '/hoodie.jpg',
     description: 'gray 후디',
-  },
+  }, 
   {
     id: 2,
     name: '티셔츠',
