@@ -1,7 +1,6 @@
-// src/store/productStore.ts
-import { isHTTPMethod } from 'next/dist/server/web/http';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, StateStorage } from 'zustand/middleware';
+import type { StateCreator, StoreApi } from 'zustand';
 
 interface Product {
   id: number;
@@ -13,7 +12,7 @@ interface Product {
 
 interface ProductStore {
   products: Product[];
-  isHydrated: boolean;
+  // isHydrated: boolean;
   addProduct: (product: Omit<Product, 'id'>) => void;
   removeProduct: (id: number) => void;
   updateProduct: (product: Product) => void;
@@ -24,7 +23,7 @@ const initialProducts: Product[] = [
     id: 1,
     name: '후디',
     price: 59000,
-    image: '/hoodie.jpg', 
+    image: '/hoodie.jpg',
     description: 'gray 후디',
   },
   {
@@ -43,9 +42,20 @@ const initialProducts: Product[] = [
   },
 ];
 
+// ✅ 타입 확장된 persist 사용
+type MyPersist = (
+  config: StateCreator<ProductStore>,
+  options: {
+    name: string;
+    storage?: StateStorage;
+    onRehydrateStorage?: (
+      store: StoreApi<ProductStore>
+    ) => (state?: ProductStore, error?: unknown) => void;
+  }
+) => StateCreator<ProductStore>;
 
 export const useProductStore = create<ProductStore>()(
-  persist(
+  (persist as MyPersist)(
     (set, get) => ({
       products: initialProducts,
       isHydrated: false,
@@ -66,20 +76,17 @@ export const useProductStore = create<ProductStore>()(
     }),
     {
       name: 'my-shop-products',
-      onRehydrateStorage: () => (state) => {
-        if (!state || state.products.length === 0) {
-          return { 
-            products: initialProducts,
-            isHydrated: true,
-          };
-        }
-        return {
-          ...state,
-          isHydrated: true,
+      onRehydrateStorage: (store) => {
+        return (persistedState) => {
+          console.log('[ZUSTAND] Rehydrating...');
+          if (!persistedState || persistedState.products.length === 0) {
+            console.log('[ZUSTAND] 초기 상품으로 설정합니다.');
+            store.setState({ products: initialProducts });
+          }
+          // store.setState({ isHydrated: true });
+          console.log('[ZUSTAND] hydration 완료!');
         };
-      },
+      }
     }
   )
 );
-
-
