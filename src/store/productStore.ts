@@ -1,4 +1,5 @@
 // src/store/productStore.ts
+import { isHTTPMethod } from 'next/dist/server/web/http';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -12,6 +13,7 @@ interface Product {
 
 interface ProductStore {
   products: Product[];
+  isHydrated: boolean;
   addProduct: (product: Omit<Product, 'id'>) => void;
   removeProduct: (id: number) => void;
   updateProduct: (product: Product) => void;
@@ -46,6 +48,7 @@ export const useProductStore = create<ProductStore>()(
   persist(
     (set, get) => ({
       products: initialProducts,
+      isHydrated: false,
       addProduct: (product) =>
         set((state) => ({
           products: [...state.products, { id: Date.now(), ...product }],
@@ -63,10 +66,17 @@ export const useProductStore = create<ProductStore>()(
     }),
     {
       name: 'my-shop-products',
-      onRehydrateStorage: () => (state, error) => {
+      onRehydrateStorage: () => (state) => {
         if (!state || state.products.length === 0) {
-          return { products: initialProducts };
+          return { 
+            products: initialProducts,
+            isHydrated: true,
+          };
         }
+        return {
+          ...state,
+          isHydrated: true,
+        };
       },
     }
   )
