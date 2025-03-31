@@ -56,7 +56,7 @@ type MyPersist = (
 
 export const useProductStore = create<ProductStore>()(
   (persist as MyPersist)(
-    (set, get) => ({
+    (set) => ({
       products: initialProducts,
       isHydrated: false,
       addProduct: (product) =>
