@@ -17,10 +17,35 @@ interface ProductStore {
   updateProduct: (product: Product) => void;
 }
 
+const initialProducts: Product[] = [
+  {
+    id: 1,
+    name: '후디디',
+    price: 59000,
+    image: '/hoodie.jpg', 
+    description: 'gray 후디',
+  },
+  {
+    id: 2,
+    name: '티셔츠',
+    price: 14900,
+    image: '/tshirt.jpg',
+    description: '깔끔한 흰색 티셔츠',
+  },
+  {
+    id: 3,
+    name: '청바지',
+    price: 44900,
+    image: '/jeans.jpg',
+    description: '편안한 청바지',
+  },
+];
+
+
 export const useProductStore = create<ProductStore>()(
   persist(
     (set) => ({
-      products: [],
+      products: initialProducts, // 기본값
       addProduct: (product) =>
         set((state) => ({
           products: [
