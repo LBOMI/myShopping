@@ -20,7 +20,7 @@ interface ProductStore {
 const initialProducts: Product[] = [
   {
     id: 1,
-    name: '후디디',
+    name: '후디',
     price: 59000,
     image: '/hoodie.jpg', 
     description: 'gray 후디',
@@ -44,31 +44,32 @@ const initialProducts: Product[] = [
 
 export const useProductStore = create<ProductStore>()(
   persist(
-    (set) => ({
-      products: initialProducts, // 기본값
+    (set, get) => ({
+      products: [],
       addProduct: (product) =>
         set((state) => ({
-          products: [
-            ...state.products,
-            {
-              id: Date.now(),
-              ...product,
-            },
-          ],
+          products: [...state.products, { id: Date.now(), ...product }],
         })),
-        removeProduct: (id) =>
-            set((state) => ({
-              products: state.products.filter((p) => p.id !== id),
-            })),
-          updateProduct: (updated) =>
-            set((state) => ({
-              products: state.products.map((p) =>
-                p.id === updated.id ? updated : p
-              ),
-            })),
+      removeProduct: (id) =>
+        set((state) => ({
+          products: state.products.filter((p) => p.id !== id),
+        })),
+      updateProduct: (updated) =>
+        set((state) => ({
+          products: state.products.map((p) =>
+            p.id === updated.id ? updated : p
+          ),
+        })),
     }),
     {
-      name: 'my-shop-products', // localStorage 키 이름
+      name: 'my-shop-products',
+      onRehydrateStorage: () => (state, error) => {
+        if (!state || state.products.length === 0) {
+          return { products: initialProducts };
+        }
+      },
     }
   )
 );
+
+
