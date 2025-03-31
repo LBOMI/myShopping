@@ -45,7 +45,7 @@ const initialProducts: Product[] = [
 export const useProductStore = create<ProductStore>()(
   persist(
     (set, get) => ({
-      products: [],
+      products: initialProducts,
       addProduct: (product) =>
         set((state) => ({
           products: [...state.products, { id: Date.now(), ...product }],
