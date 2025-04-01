@@ -43,7 +43,7 @@ export default function CheckoutPage() {
 
   return (
     <main className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold text-pink-500 mb-6">🧾 주문 정보 입력</h1>
+      <h1 className="text-2xl font-bold text-violet-400 mb-6">🧾 주문 정보 입력</h1>
 
       <ul className="mb-6 space-y-2">
         {items.map((item) => (
@@ -54,7 +54,7 @@ export default function CheckoutPage() {
         ))}
       </ul>
 
-      <p className="text-lg font-semibold text-pink-500 mb-6">
+      <p className="text-lg font-semibold text-indigo-500 mb-6">
         총 결제 금액: {total.toLocaleString()}원
       </p>
 
@@ -109,7 +109,7 @@ export default function CheckoutPage() {
 
         <button
           type="submit"
-          className="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-xl font-medium transition"
+          className="w-full bg-violet-300 hover:bg-pink-300 text-white py-2 rounded-xl font-medium transition"
         >
           💳 주문하기
         </button>
