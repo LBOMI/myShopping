@@ -1,92 +1,53 @@
 'use client';
 
-import { useCartStore } from '@/store/cartStore';
-import Link from 'next/link';
+import { useProductStore } from '@/store/productStore';
 
 export default function CartPage() {
-  const {
-    items,
-    removeFromCart,
-    clearCart,
-    increaseQuantity,
-    decreaseQuantity,
-  } = useCartStore();
+  const { products, removeProduct } = useProductStore();
 
-  const totalPrice = items.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  const cartItems = products.filter((item) => item.inCart);
 
   return (
-    <main className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl md:text-3xl font-bold text-violet-400 mb-6">
-        🛒 내 장바구니
+    <main className="max-w-4xl mx-auto p-6 min-h-screen bg-pink-50">
+      <h1 className="text-3xl font-bold text-pink-500 mb-6 text-center">
+        🛒 내가 담아둔 상품들
       </h1>
 
-      {items.length === 0 ? (
-        <p className="text-gray-500">장바구니가 비어 있어요.</p>
+      {cartItems.length === 0 ? (
+        <p className="text-center text-pink-400">장바구니가 비어 있어요 🧺</p>
       ) : (
-        <>
-          <ul className="space-y-4">
-            {items.map((item) => (
-              <li
-                key={item.id}
-                className="bg-white rounded-xl shadow-sm p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4"
-              >
-                <div>
-                  <p className="text-base font-semibold text-gray-800">{item.name}</p>
-                  <p className="text-sm text-gray-500">
-                    {item.price.toLocaleString()}원 × {item.quantity}
-                  </p>
-                </div>
+        <ul className="space-y-4">
+          {cartItems.map((item) => (
+            <li
+              key={item.id}
+              className="bg-white/70 backdrop-blur rounded-2xl shadow-sm p-5 flex flex-col md:flex-row md:justify-between md:items-center gap-4"
+            >
+              <div>
+                <p className="text-lg font-semibold text-pink-600">{item.name}</p>
+                <p className="text-sm text-gray-500">{item.platform}</p>
+                <p className="text-sm text-gray-600 mt-1">
+                  {item.price.toLocaleString()}원
+                </p>
 
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => decreaseQuantity(item.id)}
-                    className="w-8 h-8 flex items-center justify-center bg-zinc-100 rounded-full text-sm hover:bg-zinc-200 transition"
-                  >
-                    -
-                  </button>
-                  <span className="text-sm font-medium">{item.quantity}</span>
-                  <button
-                    onClick={() => increaseQuantity(item.id)}
-                    className="w-8 h-8 flex items-center justify-center bg-zinc-100 rounded-full text-sm hover:bg-zinc-200 transition"
-                  >
-                    +
-                  </button>
-                  <button
-                    onClick={() => removeFromCart(item.id)}
-                    className="ml-2 text-red-500 hover:underline text-sm"
-                  >
-                    제거
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-2 text-sm text-pink-500 underline hover:text-pink-600"
+                >
+                  상품 보러가기 🛍️
+                </a>
+              </div>
 
-          <div className="mt-8 border-t pt-6 space-y-4">
-            <p className="text-xl font-bold text-indigo-500">
-              총 결제 금액: {totalPrice.toLocaleString()}원
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3">
               <button
-                onClick={clearCart}
-                className="bg-zinc-200 hover:bg-zinc-300 text-sm px-4 py-2 rounded-xl transition"
+                onClick={() => removeProduct(item.id)}
+                className="text-sm text-red-400 hover:text-red-500 hover:underline"
               >
-                장바구니 비우기
+                제거하기 🗑️
               </button>
-
-              <Link
-                href="/checkout"
-                className="bg-violet-400 hover:bg-pink-400 text-white text-sm px-4 py-2 rounded-xl text-center transition"
-              >
-                💳 결제하기
-              </Link>
-            </div>
-          </div>
-        </>
+            </li>
+          ))}
+        </ul>
       )}
     </main>
   );
