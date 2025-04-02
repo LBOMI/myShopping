@@ -8,6 +8,10 @@ interface Product {
   price: number;
   image: string;
   description?: string;
+  memo?: string;
+  url?: string;
+  platform?: string;
+  inCart?: boolean;
 }
 
 interface ProductStore {
@@ -16,6 +20,7 @@ interface ProductStore {
   addProduct: (product: Omit<Product, 'id'>) => void;
   removeProduct: (id: number) => void;
   updateProduct: (product: Product) => void;
+  updateMemo: (id: number, memo: string) => void;
 }
 
 const initialProducts: Product[] = [
@@ -73,6 +78,12 @@ export const useProductStore = create<ProductStore>()(
             p.id === updated.id ? updated : p
           ),
         })),
+        updateMemo: (id: number, memo: string) =>
+          set((state) => ({
+            products: state.products.map((p) =>
+              p.id === Number(id) ? { ...p, memo } : p
+            ),
+          })),
     }),
     {
       name: 'my-shop-products',
