@@ -4,6 +4,8 @@ export interface Product {
     name: string;
     price: number;
     image: string;
+    memo?: string;
+    url?: string;
     description?: string; // 선택적인 설명 (없어도 됨)
   }
 
