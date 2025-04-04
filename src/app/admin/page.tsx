@@ -1,9 +1,10 @@
 // MOA 프로젝트 초기 구조 설정 – 핀터레스트 감성 스타일링 (핑크 + 몽환)
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useProductStore } from "@/store/productStore";
 import { useRouter } from "next/navigation";
+import { saveRecentPlatform, loadRecentPlatforms } from "@/utils/localRecent";
 
 export default function AddProductPage() {
   const router = useRouter();
@@ -13,23 +14,31 @@ export default function AddProductPage() {
   const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
   const [platform, setPlatform] = useState("");
+  const [recentPlatforms, setRecentPlatforms] = useState<string[]>([]);
   const [price, setPrice] = useState("");
+
+  useEffect(() => {
+    setRecentPlatforms(loadRecentPlatforms());
+  }, []);
 
   const handleSubmit = () => {
     const newProduct = {
       name,
       image,
       url,
-      platform,
+      platform: platform.trim(),
       price: price ? parseInt(price) : 0,
       isFavorite: false,
       inCart: false,
       createdAt: new Date().toISOString(),
     };
 
+    saveRecentPlatform(platform);
     addProduct(newProduct);
-    router.push("/list");
+    router.push("/");
   };
+
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 via-pink-50 to-white flex justify-center px-4 py-10">
@@ -66,6 +75,20 @@ export default function AddProductPage() {
           />
         </div>
 
+       {recentPlatforms.length > 0 && (
+        <div className="text-xs text-pink-400 mb-1">
+          최근 입력: {" "}
+          {recentPlatforms.map((p) => (
+            <button
+              key={p}
+              onClick={() => setPlatform(p)}
+              className="text-pink-600 underline mr-2 hover:text-pink-800"
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+       )}
         <div>
           <p className="text-xs text-pink-500 mb-1">플랫폼 이름 (예: 무신사)</p>
           <input

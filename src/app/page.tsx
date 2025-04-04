@@ -3,7 +3,8 @@
 import { useProductStore } from '@/store/productStore';
 import { useSearchStore } from '@/store/searchStore';
 import { useFilterStore } from '@/store/filterStore';
-import ProductCard from '@/components/ProductCard'; // 감성 카드 컴포넌트라면 유지
+import ProductCard from '@/components/ProductCard'; // 상품 카드
+
 
 export default function HomePage() {
   const { keyword } = useSearchStore();
@@ -16,7 +17,9 @@ export default function HomePage() {
       .includes(keyword.toLowerCase());
 
     const matchesPlatform =
-      selectedPlatform === '전체' || product.platform === selectedPlatform;
+      selectedPlatform === '전체' || 
+      (product.platform?.toLowerCase().trim() ?? '0') === selectedPlatform.toLowerCase().trim();
+
 
     return matchesKeyword && matchesPlatform;
   });
