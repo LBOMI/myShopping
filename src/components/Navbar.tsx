@@ -28,6 +28,7 @@ export default function Navbar() {
           🛒 장바구니 <span className="font-semibold">({totalCount})</span>
         </Link>
       </div>
+      
 
       {/* 검색창 + 관리자 링크 감싸기 */}
       <div className="relative w-full md:w-64">
@@ -47,7 +48,7 @@ export default function Navbar() {
           href="/admin"
           className="absolute right-2 -bottom-5 text-xs text-zinc-400 hover:text-pink-400 transition"
         >
-          관리자
+          상품 등록하기
         </Link>
       </div>
     </nav>
