@@ -6,6 +6,7 @@ export interface Product {
     image: string;
     memo?: string;
     url?: string;
+    platform?: string;
     description?: string; // 선택적인 설명 (없어도 됨)
   }
 

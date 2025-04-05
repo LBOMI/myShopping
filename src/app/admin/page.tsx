@@ -5,10 +5,12 @@ import { useEffect, useState } from "react";
 import { useProductStore } from "@/store/productStore";
 import { useRouter } from "next/navigation";
 import { saveRecentPlatform, loadRecentPlatforms } from "@/utils/localRecent";
+import { useFilterStore } from "@/store/filterStore";
 
 export default function AddProductPage() {
   const router = useRouter();
   const { addProduct } = useProductStore();
+  const { addPlatform } = useFilterStore();
 
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
@@ -34,6 +36,7 @@ export default function AddProductPage() {
     };
 
     saveRecentPlatform(platform);
+    addPlatform(platform.trim());
     addProduct(newProduct);
     router.push("/");
   };
