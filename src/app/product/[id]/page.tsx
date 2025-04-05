@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
 import { useProductStore } from '@/store/productStore';
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -24,16 +25,16 @@ export default function ProductDetailPage() {
 
   const handleSave = () => {
     updateMemo(product.id, memo);
-    alert('메모가 저장되었습니다. 💾');
+    toast.success('메모가 저장되었어요 💾')
   };
 
   const handleDeleteMemo = () => {
-    const confirmDelete = confirm("메모를 삭제하시겠습니까?");
+    const confirmDelete = confirm("정말 삭제할까요?");
     if (!confirmDelete) return;
 
     updateMemo(product.id, "");
     setMemo("");
-    alert("메모가 삭제되었습니다.")
+    toast.success('메모가 삭제되었어요! 🗑️')
   }
 
   return (
@@ -58,7 +59,11 @@ export default function ProductDetailPage() {
             {product.price.toLocaleString()}원
           </p>
           <button
-            onClick={() => addToCart(product)}
+            onClick={(e) => {
+              e.preventDefault();
+              addToCart(product);
+              toast.success("장바구니 담기 성공! 🧺")
+            }}
             className="mt-4 w-full bg-pink-300 hover:bg-violet-300 text-white py-2 rounded-xl transition text-sm font-medium"
           >
             장바구니 담기
