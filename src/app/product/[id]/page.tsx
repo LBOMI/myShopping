@@ -16,6 +16,9 @@ export default function ProductDetailPage() {
   const addToCart = useCartStore((state) => state.addToCart);
 
   const [memo, setMemo] = useState('');
+  const [isEditingPrice, setIsEditingPrice] = useState(false);
+  const [ editedPrice, setEditedPrice] = useState(product!.price);
+  const { updatePrice } = useCartStore();
 
   useEffect(() => {
     if (product?.memo) setMemo(product.memo);
@@ -37,6 +40,11 @@ export default function ProductDetailPage() {
     toast.success('메모가 삭제되었어요! 🗑️')
   }
 
+  const handleSavePrice = () => {
+    updatePrice(product.id, editedPrice);
+    toast.success("가격이 수정되었어요 💸");
+  };
+
   return (
     <main className="max-w-5xl mx-auto p-6">
       <div className="flex flex-col md:flex-row gap-8">
@@ -57,11 +65,33 @@ export default function ProductDetailPage() {
           <p className="text-gray-500 text-sm">{product.description}</p>
           <p className="text-indigo-400 text-xl font-semibold mt-2">
             {product.price.toLocaleString()}원
+            <button onClick={() => setIsEditingPrice(true)} title="가격 수정" className="text-indigo-400 hover:text-indigo-600">
+    ✏️
+  </button>
           </p>
+          {isEditingPrice && (
+  <div className="flex items-center gap-2 mt-2">
+    <input
+      type="number"
+      value={editedPrice}
+      onChange={(e) => setEditedPrice(Number(e.target.value))}
+      className="w-40 rounded-xl border border-pink-200 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300"
+    />
+    <button
+      onClick={() => {
+        handleSavePrice();
+        setIsEditingPrice(false); // 저장 후 편집 모드 종료
+      }}
+      className="bg-pink-500 hover:bg-pink-600 text-white text-sm font-semibold px-4 py-2 rounded-xl transition"
+    >
+      저장 💾
+    </button>
+  </div>
+)}
           <button
             onClick={(e) => {
               e.preventDefault();
-              addToCart(product);
+              addToCart({ ...product, price: editedPrice});
               toast.success("장바구니 담기 성공! 🧺")
             }}
             className="mt-4 w-full bg-pink-300 hover:bg-violet-300 text-white py-2 rounded-xl transition text-sm font-medium"
