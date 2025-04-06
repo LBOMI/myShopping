@@ -1,5 +1,7 @@
 // src/store/filterStore.ts
 import { create } from 'zustand';
+import { persist, StateStorage } from 'zustand/middleware';
+
 
 interface FilterState {
   selectedPlatform: string;
@@ -8,6 +10,7 @@ interface FilterState {
   platforms: string[];
   addPlatform: (platform: string) => void;
   loadPlatforms: () => void; // 🔥 추가
+  removePlatform: (platform: string) => void; // 🔥 추가
 }
 
 export const useFilterStore = create<FilterState>((set) => ({
@@ -26,6 +29,14 @@ export const useFilterStore = create<FilterState>((set) => ({
 
       return { platforms: updated };
     }),
+
+    removePlatform: (name: string) =>
+      set((state) => ({
+        platforms: state.platforms.filter((p) => p !== name),
+        selectedPlatform:
+          state.selectedPlatform === name ? '전체' : state.selectedPlatform,
+      })),
+    
 
   loadPlatforms: () => {
     const raw = localStorage.getItem('moa-platforms');
