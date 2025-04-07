@@ -9,7 +9,6 @@ interface Product {
   image: string;
   description?: string;
   category: string;
-  platform?: string;
 }
 
 interface ProductStore {
