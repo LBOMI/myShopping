@@ -8,7 +8,7 @@ interface Product {
   price: number;
   image: string;
   description?: string;
-  category: string;
+  category?: string;
 }
 
 interface ProductStore {

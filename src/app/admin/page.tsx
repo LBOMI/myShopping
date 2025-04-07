@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useProductStore } from '@/store/productStore';
 import Link from 'next/link';
+import { Product } from '@/types/product';
 
 export default function AdminPage() {
   const [auth, setAuth] = useState(false);
@@ -63,7 +64,7 @@ export default function AdminPage() {
     setForm({ name: '', price: '', image: '', description: '', category: '' });
   };
 
-  const handleEdit = (product: any) => {
+  const handleEdit = (product: Product) => {
     setForm({
       name: product.name,
       price: product.price.toString(),

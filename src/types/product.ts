@@ -4,7 +4,8 @@ export interface Product {
     name: string;
     price: number;
     image: string;
-    description?: string; // 선택적인 설명 (없어도 됨)
+    description?: string;
+    category?: string;
   }
 
 export interface ProductInput {
