@@ -37,7 +37,7 @@ export default function ProductDetailPage() {
           </p>
           <button
             onClick={() => addToCart(product)}
-            className="mt-4 w-full bg-pink-300 hover:bg-violet-300 text-white py-2 rounded-xl transition text-sm font-medium"
+            className="mt-4 w-full bg-blue-300 hover:bg-blue-400 text-white py-2 rounded-xl transition text-sm font-medium"
           >
             장바구니 담기
           </button>
