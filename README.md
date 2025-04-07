@@ -1,4 +1,4 @@
-# 💗 쇼핑몰 프로젝트
+# 🌊 쇼핑몰 프로젝트
 * Next.js + TypeScript 기반의 쇼핑몰 프로젝트입니다.
 * Zustand로 상태 관리를 구현하고, 상품 목록, 상세 페이지, 장바구니, 주문자 입력, 관리자 등록을 구현하였습니다.
 
@@ -15,7 +15,7 @@
 | 상태 유지 | Zustand + localStorage 연동 |
 
 ## 📷 미리보기
-<img width="1269" alt="Image" src="https://github.com/user-attachments/assets/d52a23dc-91d0-4c2e-9bc1-50b09e5c8fc5" />
+<img width="918" alt="Image" src="https://github.com/user-attachments/assets/7ebf4e1b-d920-4559-b3f0-81d6f983f1df" />
 
 
 ## 기술 스택
