@@ -8,6 +8,7 @@ interface Product {
   price: number;
   image: string;
   description?: string;
+  category: string;
 }
 
 interface ProductStore {
@@ -25,6 +26,7 @@ const initialProducts: Product[] = [
     price: 59000,
     image: '/hoodie.jpg',
     description: 'gray 후디',
+    category: 'shirt'
   }, 
   {
     id: 2,
@@ -32,6 +34,7 @@ const initialProducts: Product[] = [
     price: 14900,
     image: '/tshirt.jpg',
     description: '깔끔한 흰색 티셔츠',
+    category: 'shirt'
   },
   {
     id: 3,
@@ -39,6 +42,7 @@ const initialProducts: Product[] = [
     price: 44900,
     image: '/jeans.jpg',
     description: '편안한 청바지',
+    category: 'pants'
   },
 ];
 
