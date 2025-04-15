@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -38,6 +39,7 @@ export default function MyPage() {
 
     if (status === 'loading') return <p>로딩 중...</p>;
 
+
     return (
         <div className="flex min-h-screen bg-white text-zinc-800">
       {/* 왼쪽 메뉴 */}
@@ -59,7 +61,12 @@ export default function MyPage() {
             <li>프로필 관리</li>
             <li>주소록</li>
             <li>결제 정보</li>
-            {/* <li>정산 계좌</li> */}
+            <Link
+              href="/delete"
+              >
+               <li>회원 탈퇴</li> 
+              </Link>
+            
             {/* <li>영수증 정보</li> */}
           </ul>
         </div>
@@ -75,16 +82,16 @@ export default function MyPage() {
           </div>
           <div className="space-x-2 text-sm text-zinc-600">
             <button className="border rounded px-3 py-1">프로필 관리</button>
-            <button className="border rounded px-3 py-1">내 스타일</button>
+            {/* <button className="border rounded px-3 py-1">내 스타일</button> */}
           </div>
         </section>
 
         {/* 판매/쿠폰/친구초대 등 요약 영역 */}
         <section className="grid grid-cols-4 gap-4 text-center text-sm">
-          <SummaryBox title="판매자 등급" value="S" />
+          <SummaryBox title="등급" value="S" />
           <SummaryBox title="포인트" value="0P" />
-          <SummaryBox title="쿠폰" value="19개" />
-          <SummaryBox title="친구 초대" value="혜택 확인" />
+          <SummaryBox title="쿠폰" value="10개" />
+          <SummaryBox title="내 후기" value="0개" />
         </section>
 
         {/* 구매 내역 */}
