@@ -39,7 +39,7 @@ export default function HomePage() {
         <span className="border-b-2 border-blue-400 pb-1">Home</span>
         <span>
           {status === 'loading' ? (
-            <span>로딩 중...</span>
+            <span>Login</span>
           ) : session ? (
             <Link href={'/mypage'}>
             <button 
