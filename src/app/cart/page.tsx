@@ -30,38 +30,52 @@ export default function CartPage() {
           <ul className="space-y-4">
             {items.map((item) => (
               <li
-                key={item.id}
-                className="bg-white rounded-xl shadow-sm p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4"
-              >
+              key={item.id}
+              className="bg-white rounded-xl shadow-sm p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4"
+            >
+              <div className="flex gap-4 items-center">
+                {/* ✅ 이미지 추가 */}
+                <div className="w-16 h-16 rounded-lg overflow-hidden bg-zinc-100 flex-shrink-0">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+            
+                {/* 상품 정보 */}
                 <div>
                   <p className="text-base font-semibold text-gray-800">{item.name}</p>
                   <p className="text-sm text-gray-500">
                     {item.price.toLocaleString()}원 × {item.quantity}
                   </p>
                 </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => decreaseQuantity(item.id)}
-                    className="w-8 h-8 flex items-center justify-center bg-zinc-100 rounded-full text-sm hover:bg-zinc-200 transition"
-                  >
-                    -
-                  </button>
-                  <span className="text-sm font-medium">{item.quantity}</span>
-                  <button
-                    onClick={() => increaseQuantity(item.id)}
-                    className="w-8 h-8 flex items-center justify-center bg-zinc-100 rounded-full text-sm hover:bg-zinc-200 transition"
-                  >
-                    +
-                  </button>
-                  <button
-                    onClick={() => removeFromCart(item.id)}
-                    className="ml-2 text-red-500 hover:underline text-sm"
-                  >
-                    제거
-                  </button>
-                </div>
-              </li>
+              </div>
+            
+              {/* 수량 조절 + 제거 */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => decreaseQuantity(item.id)}
+                  className="w-8 h-8 flex items-center justify-center bg-zinc-100 rounded-full text-sm hover:bg-zinc-200 transition"
+                >
+                  -
+                </button>
+                <span className="text-sm font-medium">{item.quantity}</span>
+                <button
+                  onClick={() => increaseQuantity(item.id)}
+                  className="w-8 h-8 flex items-center justify-center bg-zinc-100 rounded-full text-sm hover:bg-zinc-200 transition"
+                >
+                  +
+                </button>
+                <button
+                  onClick={() => removeFromCart(item.id)}
+                  className="ml-2 text-red-500 hover:underline text-sm"
+                >
+                  제거
+                </button>
+              </div>
+            </li>
+            
             ))}
           </ul>
 
