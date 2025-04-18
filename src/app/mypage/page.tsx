@@ -1,47 +1,98 @@
 'use client';
+
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getAuth } from 'firebase/auth';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import { app } from '@/firebase';
+import { getDoc, getDocs, collection, query, where, doc } from 'firebase/firestore';
+import { app, db } from '@/firebase';
+import { Product } from '@/types/product';
+
+interface PurchaseItem {
+  productId: string;
+  name: string;
+  quantity: number;
+  price: number;
+  image: string;
+}
+
+interface Purchase {
+  id: string;
+  items: PurchaseItem[];
+  totalAmount: number;
+  purchasedAt: { seconds: number };
+  // image: string;
+}
 
 const auth = getAuth(app);
-const db = getFirestore(app);
+
 export default function MyPage() {
-    const {data: session, status } = useSession();
-    const router = useRouter();
-    const [username, setUsername] = useState<string | null>(null);
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
+  const [username, setUsername] = useState<string | null>(null);
+  const [purchases, setPurchases] = useState<Purchase[]>([]);
 
-    useEffect(() => {
-      const fetchUsername = async () => {
-        const user = auth.currentUser;
-        if (!user) return;
+  // 유저 인증 확인
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login');
+    }
+  }, [status]);
+
+  // 유저 정보, 구매내역 불러오기
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        if (!session?.user?.email) return;
   
-        const ref = doc(db, 'users', user.uid);
-        const snapshot = await getDoc(ref);
-        if (snapshot.exists()) {
-          const data = snapshot.data();
-          setUsername(data.username); // username 가져오기
-        }
-      };
+        // username 불러오기 (users 컬렉션에서 email로 조회)
+        const userQuery = query(
+          collection(db, "users"),
+          where("email", "==", session.user.email)
+        );
+        const userSnapshot = await getDocs(userQuery);
   
-      fetchUsername();
-    }, []);
-
-    useEffect(() => {
-        if (status === 'unauthenticated') {
-            router.push('/login');
+        if (!userSnapshot.empty) {
+          const userData = userSnapshot.docs[0].data();
+          setUsername(userData.username ?? "Guest");
+        } else {
+          setUsername("Guest");
         }
-    }, [status]);
+  
+        // 구매내역 불러오기
+        const q = query(
+          collection(db, "purchases"),
+          where("userId", "==", session.user.email)
+        );
+  
+        const snapshot2 = await getDocs(q);
+        const data = snapshot2.docs.map(doc => {
+          const docData = doc.data();
+          return {
+            id: doc.id,
+            items: docData.items ?? [],
+            totalAmount: docData.totalAmount ?? 0,
+            purchasedAt: docData.purchasedAt ?? { seconds: 0 },
+          };
+        }) as Purchase[];
+  
+        setPurchases(data);
+      } catch (error) {
+        console.error("마이페이지 데이터 불러오기 실패:", error);
+      }
+    };
+  
+    fetchUserData();
+  }, [session?.user?.email]);
+  
+  
 
-    if (status === 'loading') return <p>로딩 중...</p>;
+  if (status === 'loading') return <p>로딩 중...</p>;
 
-
-    return (
-        <div className="flex min-h-screen bg-white text-zinc-800">
+  return (
+    <div className="flex min-h-screen bg-white text-zinc-800">
       {/* 왼쪽 메뉴 */}
       <aside className="w-60 border-r border-zinc-200 p-6 space-y-6">
         <h2 className="text-xl font-bold">마이 페이지</h2>
@@ -57,17 +108,12 @@ export default function MyPage() {
         <div>
           <h3 className="text-sm text-blue-500 mb-2">내 정보</h3>
           <ul className="space-y-1 text-sm">
-            {/* <li>로그인 정보</li> */}
             <li>프로필 관리</li>
             <li>주소록</li>
             <li>결제 정보</li>
-            <Link
-              href="/delete"
-              >
-               <li>회원 탈퇴</li> 
-              </Link>
-            
-            {/* <li>영수증 정보</li> */}
+            <Link href="/delete">
+              <li>회원 탈퇴</li>
+            </Link>
           </ul>
         </div>
       </aside>
@@ -82,11 +128,10 @@ export default function MyPage() {
           </div>
           <div className="space-x-2 text-sm text-zinc-600">
             <button className="border rounded px-3 py-1">프로필 관리</button>
-            {/* <button className="border rounded px-3 py-1">내 스타일</button> */}
           </div>
         </section>
 
-        {/* 판매/쿠폰/친구초대 등 요약 영역 */}
+        {/* 요약 박스 */}
         <section className="grid grid-cols-4 gap-4 text-center text-sm">
           <SummaryBox title="등급" value="S" />
           <SummaryBox title="포인트" value="0P" />
@@ -97,34 +142,54 @@ export default function MyPage() {
         {/* 구매 내역 */}
         <section>
           <h3 className="text-lg font-semibold mb-4">구매 내역</h3>
+          
           <div className="space-y-4">
-            {[...Array(3)].map((_, idx) => (
-              <div key={idx} className="flex items-center justify-between border-b pb-4">
-                <div className="flex items-center space-x-4">
-                  <div className="w-20 h-20 bg-zinc-200 rounded-xl" />
-                  <div>
-                    <p className="text-sm font-medium">Adidas Samba OG White</p>
-                    <p className="text-xs text-zinc-500">W255</p>
-                  </div>
+            {purchases.length === 0 ? (
+              <p className="text-sm text-zinc-500">구매 내역이 없습니다.</p>
+            ) : (
+              purchases.map((purchase) => (
+                <div key={purchase.id} className="flex flex-col gap-2 border-b pb-4">
+                  <p className="text-xs text-zinc-400">
+  {purchase.purchasedAt?.seconds
+    ? new Date(purchase.purchasedAt.seconds * 1000).toLocaleString()
+    : "날짜 없음"}
+</p>
+
+{purchase.items.map((item, i) => (
+  <Link key={i} href={`/product/${item.productId}`} className="block">
+    <div className="flex justify-between hover:bg-zinc-50 p-2 rounded-lg transition">
+      <div className="flex gap-3 items-center">
+        <img
+          src={item.image}
+          alt={item.name}
+          className="w-20 h-20 object-cover rounded-xl bg-zinc-100"
+        />
+        <div>
+          <p className="text-sm font-medium">{item.name}</p>
+          <p className="text-xs text-zinc-500">
+            {item.quantity}개 / {item.price.toLocaleString()}원
+          </p>
+        </div>
+      </div>
+    </div>
+  </Link>
+))}
+
                 </div>
-                <div className="text-xs text-zinc-400 text-right">
-                  <p>24/07/06</p>
-                  <button className="text-blue-400 hover:underline">스타일 올리기</button>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </section>
       </main>
     </div>
-    );
+  );
 }
 
 function SummaryBox({ title, value }: { title: string; value: string }) {
-    return (
-      <div className="bg-zinc-100 rounded-xl p-4">
-        <p className="text-zinc-500">{title}</p>
-        <p className="font-semibold mt-1">{value}</p>
-      </div>
-    );
-  }
+  return (
+    <div className="bg-zinc-100 rounded-xl p-4">
+      <p className="text-zinc-500">{title}</p>
+      <p className="font-semibold mt-1">{value}</p>
+    </div>
+  );
+}
